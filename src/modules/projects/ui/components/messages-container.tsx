@@ -25,13 +25,18 @@ export const MessagesContainer = ({
   );
 
   const bottomRef = useRef<HTMLDivElement>(null);
+  const lastAssistantMessageIdRef = useRef<string>(null);
 
   useEffect(() => {
-    const lastAssistantMessageWithFragment = messages.findLast(
-      (message) => message.role === "ASSISTANT" && !!message.fragment
+    const lastAssistantMessage = messages.findLast(
+      (message) => message.role === "ASSISTANT"
     );
-    if (lastAssistantMessageWithFragment) {
-      setActiveFragment(lastAssistantMessageWithFragment.fragment);
+    if (
+      lastAssistantMessage?.fragment &&
+      lastAssistantMessage.id !== lastAssistantMessageIdRef.current
+    ) {
+      setActiveFragment(lastAssistantMessage.fragment);
+      lastAssistantMessageIdRef.current = lastAssistantMessage.id;
     }
   }, [messages, setActiveFragment]);
 
@@ -42,7 +47,7 @@ export const MessagesContainer = ({
   }, [messages.length]);
 
   const lastMessage = messages[messages.length - 1];
-  const isLastMessageUser = lastMessage.role === "USER"
+  const isLastMessageUser = lastMessage.role === "USER";
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
@@ -60,7 +65,7 @@ export const MessagesContainer = ({
               type={message.type}
             />
           ))}
-          {isLastMessageUser && <MessageLoading/>}
+          {isLastMessageUser && <MessageLoading />}
           <div ref={bottomRef} />
         </div>
       </div>
