@@ -1,4 +1,4 @@
-"use-client";
+"use client";
 
 import { useCurrentTheme } from "@/hooks/use-current-theme";
 import { SignIn } from "@clerk/nextjs";
