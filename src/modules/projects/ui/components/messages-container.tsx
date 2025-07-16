@@ -19,9 +19,14 @@ export const MessagesContainer = ({
 }: Props) => {
   const trpc = useTRPC();
   const { data: messages } = useSuspenseQuery(
-    trpc.messages.getMany.queryOptions({
-      projectId,
-    })
+    trpc.messages.getMany.queryOptions(
+      {
+        projectId,
+      },
+      {
+        refetchInterval: 3000,
+      }
+    )
   );
 
   const bottomRef = useRef<HTMLDivElement>(null);
