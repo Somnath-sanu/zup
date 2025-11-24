@@ -78,7 +78,7 @@ export const ProjectForm = () => {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className={cn(
-            "relative border p-4 pt-1 rounded-xl bg-sidebar dark:bg-sidebar transition-all",
+            "relative border p-4 pt-1 rounded-xl bg-sidebar/70 dark:bg-sidebar/90 transition-all",
             isFocused && "shadow-xs"
           )}
         >
@@ -126,7 +126,7 @@ export const ProjectForm = () => {
             </Button>
           </div>
         </form>
-        <div className="flex-wrap justify-center gap-2 hidden md:flex max-w-3xl">
+        {/* <div className="flex-wrap justify-center gap-2 hidden md:flex max-w-3xl">
           {PROJECT_TEMPLATES.map((template) => (
             <Button
               key={template.title}
@@ -138,7 +138,7 @@ export const ProjectForm = () => {
               {template.emoji} {template.title}
             </Button>
           ))}
-        </div>
+        </div> */}
       </section>
     </Form>
   );

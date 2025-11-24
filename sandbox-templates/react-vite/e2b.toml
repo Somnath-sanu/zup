@@ -1,0 +1,17 @@
+# This is a config for E2B sandbox template.
+# You can use template ID (m7fe63tstu9ljmj6niwp) or template name (vibe-react-vite-shanu) to create a sandbox:
+
+# Python SDK
+# from e2b import Sandbox, AsyncSandbox
+# sandbox = Sandbox("vibe-react-vite-shanu") # Sync sandbox
+# sandbox = await AsyncSandbox.create("vibe-react-vite-shanu") # Async sandbox
+
+# JS SDK
+# import { Sandbox } from 'e2b'
+# const sandbox = await Sandbox.create('vibe-react-vite-shanu')
+
+team_id = "2bfd4d95-f43b-4012-bd0f-2f182fe864db"
+start_cmd = "/compile_page.sh"
+dockerfile = "e2b.Dockerfile"
+template_name = "vibe-react-vite-shanu"
+template_id = "m7fe63tstu9ljmj6niwp"

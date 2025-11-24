@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { useTRPC } from "@/trpc/client";
@@ -16,43 +16,47 @@ export const ProjectsList = () => {
   if (!user) return null;
 
   return (
-    <div className="w-full bg-white dark:bg-sidebar rounded-xl p-8 border flex flex-col gap-y-6 sm:gap-y-4">
-      <h2 className="text-2xl font-semibold">
-        {user.firstName}&apos;s Projects
+    <div className="flex flex-col gap-6 w-full">
+      <h2 className="text-2xl font-bold text-white drop-shadow-md">
+        Recent Projects
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projects?.length === 0 && (
-          <div className="col-span-full text-center">
-            <p className="text-sm text-muted-foreground">No projects found</p>
+          <div className="col-span-full text-center p-8 rounded-xl backdrop-blur-[2px] bg-white/5 border border-white/10">
+            <p className="text-white/80">No projects found</p>
           </div>
         )}
         {projects?.map((project) => (
-          <Button
+          <Link
             key={project.id}
-            variant={"outline"}
-            className="font-normal h-auto justify-start w-full text-start p-4"
-            asChild
+            href={`/projects/${project.id}`}
+            className="group block"
           >
-            <Link href={`/projects/${project.id}`}>
-              <div className="flex items-center gap-x-4">
-                <Image
-                  src={"/logo.svg"}
-                  alt="zup"
-                  width={32}
-                  height={32}
-                  className="object-contain"
-                />
-                <div className="flex flex-col">
-                  <h3 className="truncate font-medium">{project.name}</h3>
-                  <p className="text-muted-foreground text-sm">
+            <div className="h-full p-6 rounded-xl backdrop-blur-sm bg-white/5 dark:bg-black/40 border border-white/10 hover:border-white/30 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group-hover:bg-white/10 dark:group-hover:bg-black/50">
+              <div className="flex items-start gap-4">
+                <div className="p-2 rounded-lg bg-white/10 backdrop-blur-[2px] shrink-0">
+                  <Image
+                    src={"/logo.svg"}
+                    alt="zup"
+                    width={24}
+                    height={24}
+                    className="object-contain"
+                  />
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <h3 className="font-semibold text-white truncate text-lg group-hover:text-primary transition-colors drop-shadow-sm">
+                    {project.name}
+                  </h3>
+                  <p className="text-white/70 text-sm mt-1 drop-shadow-sm">
+                    Edited{" "}
                     {formatDistanceToNow(project.updatedAt, {
                       addSuffix: true,
                     })}
                   </p>
                 </div>
               </div>
-            </Link>
-          </Button>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
