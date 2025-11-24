@@ -1,18 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "next-themes";
 import { ClerkProvider } from "@clerk/nextjs";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
 });
 
@@ -21,19 +15,21 @@ export const metadata: Metadata = {
     default: "ZUP | AI-Powered Project Collaboration",
     template: "%s | ZUP",
   },
-  description: "ZUP is an AI-powered platform for seamless project collaboration, code sharing, and productivity.",
+  description:
+    "ZUP is an AI-powered platform for seamless project collaboration, code sharing, and productivity.",
   keywords: [
     "AI",
     "project collaboration",
     "code sharing",
     "productivity",
     "Next.js",
-    "ZUP"
+    "ZUP",
   ],
   metadataBase: new URL("https://zup-tau.vercel.app"),
   openGraph: {
     title: "ZUP | AI-Powered Project Collaboration",
-    description: "ZUP is an AI-powered platform for seamless project collaboration, code sharing, and productivity.",
+    description:
+      "ZUP is an AI-powered platform for seamless project collaboration, code sharing, and productivity.",
     url: "https://zup-tau.vercel.app",
     siteName: "ZUP",
     images: [
@@ -50,7 +46,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "ZUP | AI-Powered Project Collaboration",
-    description: "ZUP is an AI-powered platform for seamless project collaboration, code sharing, and productivity.",
+    description:
+      "ZUP is an AI-powered platform for seamless project collaboration, code sharing, and productivity.",
     images: ["/logo.svg"],
     creator: "https://x.com/sanu7326_mishra",
   },
@@ -68,35 +65,51 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider
-    appearance={{
-      variables: {
-        colorPrimary: ""
-      }
-    }}
+      appearance={{
+        variables: {
+          colorPrimary: "",
+        },
+      }}
     >
       <TRPCReactProvider>
         <html lang="en" suppressHydrationWarning>
           <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
             <meta name="theme-color" content="#18181b" />
             <link rel="icon" href="/favicon.ico" />
             {/* SEO: fallback meta tags for crawlers */}
-            <meta name="description" content="ZUP is an AI-powered platform for seamless project collaboration, code sharing, and productivity." />
-            <meta property="og:title" content="ZUP | AI-Powered Project Collaboration" />
-            <meta property="og:description" content="ZUP is an AI-powered platform for seamless project collaboration, code sharing, and productivity." />
+            <meta
+              name="description"
+              content="ZUP is an AI-powered platform for seamless project collaboration, code sharing, and productivity."
+            />
+            <meta
+              property="og:title"
+              content="ZUP | AI-Powered Project Collaboration"
+            />
+            <meta
+              property="og:description"
+              content="ZUP is an AI-powered platform for seamless project collaboration, code sharing, and productivity."
+            />
             <meta property="og:image" content="/logo.svg" />
             <meta property="og:url" content="https://zup-tau.vercel.app" />
             <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:title" content="ZUP | AI-Powered Project Collaboration" />
-            <meta name="twitter:description" content="ZUP is an AI-powered platform for seamless project collaboration, code sharing, and productivity." />
+            <meta
+              name="twitter:title"
+              content="ZUP | AI-Powered Project Collaboration"
+            />
+            <meta
+              name="twitter:description"
+              content="ZUP is an AI-powered platform for seamless project collaboration, code sharing, and productivity."
+            />
             <meta name="twitter:image" content="/logo.svg" />
           </head>
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          >
+          <body className={`${spaceGrotesk.className} antialiased`}>
             <ThemeProvider
               attribute="class"
-              defaultTheme="dark"
+              defaultTheme="light"
               enableSystem
               disableTransitionOnChange
             >

@@ -21,11 +21,24 @@ interface AgentState {
 }
 
 export const codeAgentFunction = inngest.createFunction(
-  { id: "code-agent" },
+  {
+    id: "code-agent",
+    retries: 3,
+    onFailure: async ({ event }) => {
+      await prisma.message.create({
+        data: {
+          content: "Something went wrong. Please try again.",
+          role: "ASSISTANT",
+          type: "ERROR",
+          projectId: event.data.event.data.projectId,
+        },
+      });
+    },
+  },
   { event: "code-agent/run" },
   async ({ event, step }) => {
     const sandboxId = await step.run("get-sandbox-id", async () => {
-      const sandbox = await Sandbox.create("vibe-nextjs-shanu-121");
+      const sandbox = await Sandbox.create("web3chat-nextjs");
       await sandbox.setTimeout(SANDBOX_TIMEOUT); // 20 minutes
       return sandbox.sandboxId;
     });
@@ -71,7 +84,7 @@ export const codeAgentFunction = inngest.createFunction(
       name: "code-agent",
       description: "An expert coding agent.",
       system: PROMPT,
-      model: gemini({ model: "gemini-2.0-flash" }),
+      model: gemini({ model: "gemini-2.5-pro" }),
       tools: [
         createTool({
           name: "terminal",
@@ -208,13 +221,13 @@ export const codeAgentFunction = inngest.createFunction(
       name: "fragment-title-code-agent",
       description: "A fragment title generator.",
       system: FRAGMENT_TITLE_PROMPT,
-      model: gemini({ model: "gemini-2.0-flash" }),
+      model: gemini({ model: "gemini-2.5-flash" }),
     });
     const responseGenerator = createAgent({
       name: "response-generator-code-agent",
       description: "A response generator.",
       system: RESPONSE_PROMPT,
-      model: gemini({ model: "gemini-2.0-flash" }),
+      model: gemini({ model: "gemini-2.5-flash" }),
     });
 
     const { output: fragmentTitleOutput } = await fragmentTitleGenerator.run(

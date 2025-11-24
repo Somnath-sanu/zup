@@ -5,6 +5,7 @@ import { UserControl } from "@/components/user-control";
 import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { TwitterIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,30 +14,41 @@ export const Navbar = () => {
   return (
     <nav
       className={cn(
-        "p-4 bg-transparent fixed top-0 left-0 right-0 z-50 transition-all duration-200 border-b border-transparent",
-        isScrolled && "bg-background border-border"
+        "p-4 bg-transparent fixed top-0 left-0 right-0 z-50 transition-all duration-200",
+        isScrolled && "bg-transparent"
       )}
     >
-      <div className="max-w-5xl mx-auto w-full flex justify-between items-center">
+      <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
           <Image src="/logo.svg" alt="Zup" width={24} height={24} />
           <span className="font-semibold text-lg">Zup</span>
         </Link>
-        <SignedOut>
-          <div className="flex gap-2">
-            <SignUpButton>
-              <Button variant="outline" size="sm">
-                Sign up
-              </Button>
-            </SignUpButton>
-            <SignInButton>
-              <Button size="sm">Sign in</Button>
-            </SignInButton>
-          </div>
-        </SignedOut>
-        <SignedIn>
-          <UserControl showName />
-        </SignedIn>
+        <div className="flex items-center gap-4">
+          <Link
+            href="https://x.com/sanu7326_mishra"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Follow on X (Twitter)"
+          >
+            <TwitterIcon className="size-5" />
+          </Link>
+          <SignedOut>
+            <div className="flex gap-2">
+              <SignUpButton>
+                <Button variant="outline" size="sm">
+                  Sign up
+                </Button>
+              </SignUpButton>
+              <SignInButton>
+                <Button size="sm">Sign in</Button>
+              </SignInButton>
+            </div>
+          </SignedOut>
+          <SignedIn>
+            <UserControl showName />
+          </SignedIn>
+        </div>
       </div>
     </nav>
   );

@@ -7,6 +7,39 @@ import { TRPCError } from "@trpc/server";
 import { consumeCredits } from "@/lib/usage";
 
 export const projectsRouter = createTRPCRouter({
+  rename: protectedProcedure
+    .input(
+      z.object({
+        projectId: z.string().min(1, { message: "Id is required" }),
+        name: z.string().min(1, { message: "Name is required" }),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const existingProject = await prisma.project.findUnique({
+        where: {
+          id: input.projectId,
+          userId: ctx.auth.userId,
+        },
+      });
+
+      if (!existingProject) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found",
+        });
+      }
+
+      const updatedProject = await prisma.project.update({
+        where: {
+          id: input.projectId,
+        },
+        data: {
+          name: input.name,
+        },
+      });
+
+      return updatedProject;
+    }),
   getOne: protectedProcedure
     .input(
       z.object({
