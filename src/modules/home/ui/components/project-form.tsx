@@ -58,13 +58,13 @@ export const ProjectForm = () => {
 
   const [isFocused, setIsFocused] = useState(false);
 
-  const onSelect = (value: string) => {
-    form.setValue("value", value, {
-      shouldDirty: true,
-      shouldValidate: true,
-      shouldTouch: true,
-    });
-  };
+  // const onSelect = (value: string) => {
+  //   form.setValue("value", value, {
+  //     shouldDirty: true,
+  //     shouldValidate: true,
+  //     shouldTouch: true,
+  //   });
+  // };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     await createProject.mutateAsync({
