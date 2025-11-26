@@ -14,6 +14,7 @@ import { z } from "zod";
 import { FRAGMENT_TITLE_PROMPT, PROMPT, RESPONSE_PROMPT } from "@/prompt";
 import prisma from "@/lib/db";
 import { SANDBOX_TIMEOUT } from "@/types";
+import { firecrawl } from "@/firecrawl";
 
 interface AgentState {
   summary: string;
@@ -167,7 +168,7 @@ export const codeAgentFunction = inngest.createFunction(
             return step?.run("readFiles", async () => {
               try {
                 const sandbox = await getSandbox(sandboxId);
-                const contents = [];
+                const contents: { path: string; content: string }[] = [];
                 for (const file of files) {
                   const content = await sandbox.files.read(file);
                   contents.push({
@@ -179,6 +180,47 @@ export const codeAgentFunction = inngest.createFunction(
                 return JSON.stringify(contents);
               } catch (error) {
                 return "Error :" + error;
+              }
+            });
+          },
+        }),
+
+        createTool({
+          name: "scrape",
+          description: "Scrape a website to get data to clone it pixel perfect",
+          parameters: z.object({
+            url: z.string(),
+          }),
+          handler: async ({ url }, { step }) => {
+            return step?.run("scrape", async () => {
+              try {
+                const response = await firecrawl.scrape(url, {
+                  formats: [
+                    "rawHtml",
+                    "screenshot",
+                    "markdown",
+                    "html",
+                    "links",
+                  ],
+                  maxAge: 3600000, // 1 hour in milliseconds
+                });
+                return JSON.stringify(response);
+              } catch (error: any) {
+                const message =
+                  error?.message ||
+                  error?.toString() ||
+                  error ||
+                  "Unknown error";
+
+                if (message.includes("not currently supported")) {
+                  return {
+                    success: false,
+                    errorType: "UNSUPPORTED_WEBSITE",
+                    message:
+                      "This website cannot be scraped using Firecrawl. Use your own knowledge to scrape it. Don't call this tool again.",
+                  };
+                }
+                return "Error :" + message;
               }
             });
           },
@@ -292,7 +334,7 @@ export const codeAgentFunction = inngest.createFunction(
             create: {
               sandboxUrl: sandboxUrl,
               title: generateFragmentTitle(),
-              files: result.state.data.files,
+              files: result.state.data.files
             },
           },
         },

@@ -6,12 +6,11 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  // output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Project {
@@ -54,9 +53,10 @@ model Fragment {
   messageId String  @unique
   message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
 
-  sandboxUrl String
-  title      String
-  files      Json
+  sandboxUrl        String
+  lastSandboxUpdate DateTime @default(now())
+  title             String
+  files             Json
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -67,3 +67,10 @@ model Usage {
   points Int
   expire DateTime?
 }
+
+model SandboxUsage {
+  key    String    @id
+  points Int
+  expire DateTime?
+}
+
