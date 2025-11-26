@@ -3,7 +3,7 @@ import { MessageCard } from "./message-card";
 import { MessageForm } from "./message-form";
 import { useTRPC } from "@/trpc/client";
 import { useEffect, useRef } from "react";
-import { Fragment } from "@/generated/prisma";
+import { Fragment } from "@prisma/client";
 import { MessageLoading } from "./message-loading";
 
 interface Props {

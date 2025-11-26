@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/resizable";
 
 import { MessagesContainer } from "../components/messages-container";
-import { Fragment } from "@/generated/prisma/browser";
+import { Fragment } from "@prisma/client";
 import { ProjectHeader } from "../components/project-header";
 import { FragmentWeb } from "../components/fragment-web";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
