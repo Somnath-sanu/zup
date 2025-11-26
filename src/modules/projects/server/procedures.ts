@@ -5,8 +5,48 @@ import { z } from "zod";
 import { generateSlug } from "random-word-slugs";
 import { TRPCError } from "@trpc/server";
 import { consumeCredits } from "@/lib/usage";
+import { google } from "@ai-sdk/google";
+import { generateText } from "ai";
+import { PROJECT_NAME_PROMPT } from "@/prompt";
 
 export const projectsRouter = createTRPCRouter({
+  delete: protectedProcedure
+    .input(
+      z.object({
+        projectId: z.string().min(1, { message: "Id is required" }),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const existingProject = await prisma.project.findUnique({
+        where: {
+          id: input.projectId,
+          userId: ctx.auth.userId,
+        },
+      });
+
+      if (!existingProject) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found",
+        });
+      }
+
+      if (existingProject.userId !== ctx.auth.userId) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to delete this project",
+        });
+      }
+
+      const deletedProject = await prisma.project.delete({
+        where: {
+          id: input.projectId,
+          userId: ctx.auth.userId,
+        },
+      });
+
+      return deletedProject;
+    }),
   rename: protectedProcedure
     .input(
       z.object({
@@ -101,12 +141,17 @@ export const projectsRouter = createTRPCRouter({
         }
       }
 
+      const { text } = await generateText({
+        model: google("gemini-2.0-flash"),
+        prompt: input.value,
+        maxOutputTokens: 200,
+        system: PROJECT_NAME_PROMPT,
+      });
+
       const newProject = await prisma.project.create({
         data: {
           userId: ctx.auth.userId,
-          name: generateSlug(2, {
-            format: "kebab",
-          }),
+          name: text,
           messages: {
             create: {
               content: input.value,

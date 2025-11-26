@@ -21,13 +21,15 @@ const formSchema = z.object({
     .max(10000, { message: "Value is too long" }),
 });
 
+type formType = z.infer<typeof formSchema>;
+
 export const ProjectForm = () => {
   const router = useRouter();
   const trpc = useTRPC();
   const clerk = useClerk();
   const queryClient = useQueryClient();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<formType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       value: "",
@@ -66,7 +68,7 @@ export const ProjectForm = () => {
   //   });
   // };
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: formType) => {
     await createProject.mutateAsync({
       value: values.value,
     });
@@ -94,7 +96,7 @@ export const ProjectForm = () => {
                 minRows={2}
                 maxRows={8}
                 className="pt-4 resize-none border-none outline-none w-full bg-transparent"
-                placeholder="What would you like to build?"
+                placeholder="What would you like to build or clone?"
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
                     e.preventDefault();

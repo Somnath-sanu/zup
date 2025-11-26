@@ -20,10 +20,19 @@ import { FileExplorer } from "@/components/file-explorer";
 import { UserControl } from "@/components/user-control";
 import { useAuth } from "@clerk/nextjs";
 import { ErrorBoundary } from "react-error-boundary";
+import { Hint } from "@/components/hint";
+import { SANDBOX_TIMEOUT } from "@/types";
+import humanizeDuration from "humanize-duration";
 
 interface Props {
   projectId: string;
 }
+
+const label = humanizeDuration(SANDBOX_TIMEOUT, {
+  language: "en",
+  units: ["h", "m"],
+  round: true,
+});
 
 export const ProjectView = ({ projectId }: Props) => {
   const [activeFragment, setActiveFragment] = useState<Fragment | null>(null);
@@ -68,8 +77,12 @@ export const ProjectView = ({ projectId }: Props) => {
             <div className="w-full flex items-center p-2 border-b gap-x-2">
               <TabsList className="h-8 p-0 border rounded-md">
                 <TabsTrigger value="preview" className="rounded-md">
-                  <EyeIcon />
-                  <span>Demo</span>
+                  <Hint text={`Preview is only availabe for ${label}`}>
+                    <div className="flex items-center gap-x-2">
+                      <EyeIcon />
+                      <span>Demo</span>
+                    </div>
+                  </Hint>
                 </TabsTrigger>
                 <TabsTrigger value="code" className="rounded-md">
                   <CodeIcon />
@@ -89,7 +102,9 @@ export const ProjectView = ({ projectId }: Props) => {
               </div>
             </div>
             <TabsContent value="preview">
-              {!!activeFragment && <FragmentWeb data={activeFragment} />}
+              {!!activeFragment && (
+                <FragmentWeb data={activeFragment} projectId={projectId} />
+              )}
             </TabsContent>
             <TabsContent value="code" className="min-h-0">
               {!!activeFragment?.files && (
