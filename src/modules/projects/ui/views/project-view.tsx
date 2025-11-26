@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/resizable";
 
 import { MessagesContainer } from "../components/messages-container";
-import { Fragment } from "@/generated/prisma";
+import { Fragment } from "@/generated/prisma/browser";
 import { ProjectHeader } from "../components/project-header";
 import { FragmentWeb } from "../components/fragment-web";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -77,7 +77,7 @@ export const ProjectView = ({ projectId }: Props) => {
             <div className="w-full flex items-center p-2 border-b gap-x-2">
               <TabsList className="h-8 p-0 border rounded-md">
                 <TabsTrigger value="preview" className="rounded-md">
-                  <Hint text={`Preview is only availabe for ${label}`}>
+                  <Hint text={`Preview is only available for ${label}`}>
                     <div className="flex items-center gap-x-2">
                       <EyeIcon />
                       <span>Demo</span>

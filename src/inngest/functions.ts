@@ -213,14 +213,18 @@ export const codeAgentFunction = inngest.createFunction(
                   "Unknown error";
 
                 if (message.includes("not currently supported")) {
-                  return {
+                  return JSON.stringify({
                     success: false,
                     errorType: "UNSUPPORTED_WEBSITE",
                     message:
                       "This website cannot be scraped using Firecrawl. Use your own knowledge to scrape it. Don't call this tool again.",
-                  };
+                  });
                 }
-                return "Error :" + message;
+                return JSON.stringify({
+                  success: false,
+                  errorType: "UNKNOWN_ERROR",
+                  message,
+                });
               }
             });
           },
@@ -334,7 +338,7 @@ export const codeAgentFunction = inngest.createFunction(
             create: {
               sandboxUrl: sandboxUrl,
               title: generateFragmentTitle(),
-              files: result.state.data.files
+              files: result.state.data.files,
             },
           },
         },
