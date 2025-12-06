@@ -9,7 +9,10 @@ import {
   createState,
 } from "@inngest/agent-kit";
 import { Sandbox } from "@e2b/code-interpreter";
-import { getSandbox, lastAssistantTextMessageContent } from "./utils";
+import {
+  getSandbox,
+  lastAssistantTextMessageContent,
+} from "./utils";
 import { z } from "zod";
 import { FRAGMENT_TITLE_PROMPT, PROMPT, RESPONSE_PROMPT } from "@/prompt";
 import prisma from "@/lib/db";

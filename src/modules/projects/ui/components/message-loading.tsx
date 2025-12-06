@@ -12,6 +12,22 @@ const ShimmerMessages = () => {
     "Optimizing layout...",
     "Adding final touches...",
     "Almost ready...",
+    "Designing the interface...",
+    "Compiling styles...",
+    "Architecting the structure...",
+    "Weaving magic into your code...",
+    "Polishing the details...",
+    "Setting up interactions...",
+    "Configuring the framework...",
+    "Creating responsive layouts...",
+    "Injecting creativity...",
+    "Fine-tuning animations...",
+    "Assembling the pieces...",
+    "Making it pixel perfect...",
+    "Brewing some code...",
+    "Summoning the AI wizards...",
+    "Connecting the dots...",
+    "Just a moment more...",
   ];
 
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);

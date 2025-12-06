@@ -25,7 +25,7 @@ export const Navbar = () => {
         </Link>
         <div className="flex items-center gap-4">
           <Link
-            href="https://x.com/sanu7326_mishra"
+            href="https://x.com/shanu_111ev"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-foreground transition-colors"
