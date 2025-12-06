@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import {
   ResizableHandle,
@@ -36,6 +36,14 @@ const label = humanizeDuration(SANDBOX_TIMEOUT, {
 
 export const ProjectView = ({ projectId }: Props) => {
   const [activeFragment, setActiveFragment] = useState<Fragment | null>(null);
+  const [sandboxIdForIFrame, setSandboxIdForIFrame] = useState<string>(
+    activeFragment?.sandboxUrl || ""
+  );
+
+  useEffect(() => {
+    if (!activeFragment) return;
+    setSandboxIdForIFrame(activeFragment.sandboxUrl);
+  }, [activeFragment]);
 
   const [tabState, setTabState] = useState<"preview" | "code">("preview");
 
@@ -102,8 +110,13 @@ export const ProjectView = ({ projectId }: Props) => {
               </div>
             </div>
             <TabsContent value="preview">
-              {!!activeFragment && (
-                <FragmentWeb data={activeFragment} projectId={projectId} />
+              {!!activeFragment && !!sandboxIdForIFrame && (
+              <FragmentWeb
+                  data={activeFragment}
+                  projectId={projectId}
+                  sandboxIdForIFrame={sandboxIdForIFrame}
+                  setSandboxIdForIFrame={setSandboxIdForIFrame}
+                />
               )}
             </TabsContent>
             <TabsContent value="code" className="min-h-0">
@@ -119,7 +132,3 @@ export const ProjectView = ({ projectId }: Props) => {
     </div>
   );
 };
-
-/**
- * useSuspenseQuery is used (instead of regular useQuery) because it's expected   that data is already prefetched and hydrated from server.
- */

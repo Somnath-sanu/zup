@@ -28,8 +28,8 @@ const Page = async ({ params }: Props) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ErrorBoundary fallback={<p>Error!</p>}>
-        <Suspense fallback={<p>Loading...</p>}>
+      <ErrorBoundary fallback={<ProjectNotFound />}>
+        <Suspense fallback={<ProjectLoading />}>
           <ProjectView projectId={projectId} />
         </Suspense>
       </ErrorBoundary>
@@ -38,3 +38,19 @@ const Page = async ({ params }: Props) => {
 };
 
 export default Page;
+
+function ProjectLoading() {
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <p className="text-2xl font-bold">Loading...</p>
+    </div>
+  );
+}
+
+function ProjectNotFound() {
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <p className="text-2xl font-bold">Project not found</p>
+    </div>
+  );
+}

@@ -11,14 +11,15 @@ import { checkForClosePort } from "../../server/check-sandbox";
 interface Props {
   data: Fragment;
   projectId: string;
+  sandboxIdForIFrame: string;
+  setSandboxIdForIFrame: (sandboxIdForIFrame: string) => void;
 }
 
-export const FragmentWeb = ({ data, projectId }: Props) => {
+export const FragmentWeb = ({ data, projectId, sandboxIdForIFrame, setSandboxIdForIFrame }: Props) => {
   const [fragmentKey, setFragmentKey] = useState(0);
   const [copied, setCopied] = useState(false);
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-  const [sandboxIdForIFrame, setSandboxIdForIFrame] = useState(data.sandboxUrl);
   const [quotaExhausted, setQuotaExhausted] = useState(false);
 
   const onRefresh = () => {
@@ -86,7 +87,7 @@ export const FragmentWeb = ({ data, projectId }: Props) => {
   useEffect(() => {
     const timeoutId = setTimeout(checkPortAndRestartIfNeeded, 1000);
     return () => clearTimeout(timeoutId);
-  }, [sandboxIdForIFrame]);
+  }, [sandboxIdForIFrame,data]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(sandboxIdForIFrame);
